@@ -1,0 +1,139 @@
+html, body {
+    margin: 0;
+    height: 100%;  /* center body content in center of page */
+}
+
+body {
+    background-color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background-color: rgb(138, 138, 247);
+    width: 400px;
+    /* height: 550px; */
+    border-radius: 15px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+button {
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+
+/* styling for the screen part of calculator */
+.display-container {
+    background-color: darkcyan;
+    border-radius: 6px;
+    word-wrap: break-word;
+}
+
+.display-container > div {
+    text-align: right;
+    border-radius: 6px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.input-history {
+    font-size: 20px;
+    /* height: 32px; */
+    background-color: red;
+}
+
+.input-display {
+    /* height: 64px; */
+    font-size: 32px;
+    background-color: aqua;
+}
+
+/* styling for clear, delete buttons */
+.del-container {
+    display: flex;
+    gap: 10px;
+}
+
+.del-container > button {
+    /* padding: 20px 60px 20px 60px; */
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 6px;
+    font-size: 24px;
+}
+
+.clearBtn {
+    background-color: rgb(249, 110, 110);
+    margin-right: auto;
+    width: 49%;
+}
+
+.clearBtn:hover {
+    background-color: rgb(208, 46, 46);
+}
+
+.deleteBtn {
+    background-color: rgb(201, 157, 106);
+    margin-left: auto;
+    width: 50%;
+}
+
+.deleteBtn:hover {
+    background-color: rgb(177, 122, 59);
+}
+
+/* keypad styling */
+.keypad-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
+
+.keypad-container button:hover {
+    background-color: rgb(185, 192, 197);
+}
+
+.keypad-container button {
+    font-size: 32px;
+    border-radius: 6px;
+    /* margin: 5px; */
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.btn-7,
+.btn-4,
+.btn-1, 
+.btn-decimal {
+    margin: 5px 5px 5px 0px;
+}
+
+.btn-8,
+.btn-9,
+.btn-5, 
+.btn-6,
+.btn-2,
+.btn-3, 
+.btn-0,
+.btn-equals {
+    margin: 5px 5px 5px 5px;
+}
+
+
+.btn-divide,
+.btn-multiply,
+.btn-subtract, 
+.btn-add {
+    margin: 5px 0px 5px 5px;
+}
+
+.btn-decimal, 
+.btn-0, 
+.btn-equals, 
+.btn-add {
+    margin-bottom: 0;
+}
