@@ -1,26 +1,29 @@
 let displayStr = ''; // variable for the main display
 let historyStr = ''; // stores history info, above the main display.
 let operators = ['+', '-', '*', '÷', '='];
+let prevOperator = '';
 let operands = [undefined, undefined];
 let opCount = 0;
 
+let switchDisplay = false, needToSwitchHistory = false;
+
 function add(x, y){
-    return x + y;
+    return Number(x) + Number(y);
 }
 
 function subtract(x, y){
-    return x - y;
+    return Number(x) - Number(y);
 }
 
 function multiply(x, y){
-    return x * y;
+    return Number(x) * Number(y);
 }
 
 function divide(x, y){
     if(y == 0){
         return "Divide by Zero!";
     }
-    return x / y;
+    return Number(x) / Number(y);
 }
 
 // called whenever a keypad button has been clicked on (not for click or delete).
@@ -35,15 +38,15 @@ function updateDisplay(button){
         console.log("clicked on operator! " + value);
 
     }
-
-    else if(displayStr == '&nbsp;'){
+    else if(displayStr == '&nbsp;' || switchDisplay){
         displayStr = value;
+        switchDisplay = false;
     }
-
     else{
         displayStr += value;
-        document.querySelector('.input-display').innerHTML = displayStr;
     }
+
+    document.querySelector('.input-display').innerHTML = displayStr;
 
     // DEBUGGING: 
     // console.log(`Clicked on: ${value}, new display value: ${displayStr}`);
@@ -53,28 +56,38 @@ function updateDisplay(button){
 function clickedOperator(op){
     let displayDiv = document.querySelector('.input-display');
     let historyDiv = document.querySelector('.input-history');
-    if(op == '='){
-        if(operands[0] != undefined && operands[1] != undefined){
-            historyStr += ' =';
-            displayStr = operate(operands[0], operands[1]);
-            
+    if(op == '=' && opCount == 1){
+            historyStr += displayDiv.textContent + ' =';
+            displayStr = operate(prevOperator, operands[0], displayDiv.textContent);
             operands[0] = Number(displayStr);
-            opCount = 1;
-
-            displayDiv.textContent = displayStr;
-            historyDiv.textContent = historyStr;
-        }
+            opCount = 0;
+            prevOperator = '=';
+            needToSwitchHistory = true;
     }
     else{ // clicked on +, -, /, *
-        // don't need to do anything if opCount is 0
-        if(opCount == 1){
+        if(opCount == 0 && displayDiv.innerHTML != '&nbsp;'){
             opCount += 1;
-            displayStr = `${displayStr} ${op} `;
+            operands[0] = displayDiv.textContent;
+            if(needToSwitchHistory){
+                historyStr = `${displayDiv.textContent} ${op}`;
+                needToSwitchHistory = false;
+            }
+            historyStr = `${operands[0]} ${op} `;
+            switchDisplay = true;
+            prevOperator = op;
         }
-        else if(opCount == 2){
-
+        else if(opCount == 1 && displayDiv.innerHTML != '&nbsp;'){
+            opCount = 1;
+            displayStr = operate(prevOperator, operands[0], displayDiv.textContent)
+            historyStr = `${displayStr} ${op} `;
+            operands[0] = displayStr;
+            switchDisplay = true;
+            prevOperator = op;
         }
     }
+
+    displayDiv.innerHTML = displayStr;
+    historyDiv.innerHTML = historyStr;
 
 }
 
@@ -89,6 +102,7 @@ function clearKey(){
 
     operands[0] = undefined;
     operands[1] = undefined;
+    prevOperator = '';
     opCount = 0;
 
     // DEBUGGING: 
@@ -97,7 +111,7 @@ function clearKey(){
 
 function deleteKey(){
     if(displayStr != '&nbsp;'){
-        displayStr = displayStr.slice(0, -1); // remove the last character of the display str
+        displayStr = displayStr.toString().slice(0, -1); // remove the last character of the display str
         if(displayStr == ''){
             displayStr = '&nbsp;';
         }
