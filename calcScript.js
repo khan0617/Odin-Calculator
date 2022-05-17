@@ -39,7 +39,7 @@ function updateDisplay(button, keyboardPress = undefined){
         clickedOperator(value);
 
         // DEBUGGING:
-        console.log("clicked on operator! " + value);
+        // console.log("clicked on operator! " + value);
 
     }
     else if(displayStr == '&nbsp;' || switchDisplay){
@@ -118,7 +118,7 @@ function clearKey(){
     opCount = 0;
 
     // DEBUGGING: 
-    console.log("clicked on: clear");
+    // console.log("clicked on: clear");
 }
 
 function deleteKey(){
@@ -131,15 +131,8 @@ function deleteKey(){
     }
 
     // DEBUGGING:
-    console.log("clicked on: delete");
+    // console.log("clicked on: delete");
 }
-
-function updateHistory(string){
-    document.querySelector('input-history').textContent = string;
-}
-
-
-
 
 // given an operator and 2 arguments, compute the result between them
 // operator is a string, x and y are numbers
@@ -211,7 +204,7 @@ document.addEventListener('keydown', (e) => {
     }
 
     if(keyPressed != ''){
-        console.log("Pressed key: " + keyPressed);
+        // console.log("Pressed key: " + keyPressed);
         updateDisplay(undefined, keyPressed);
     }
     
