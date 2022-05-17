@@ -13,11 +13,12 @@ body {
 .container {
     background-color: rgb(138, 138, 247);
     width: 400px;
-    /* height: 550px; */
+    /* height: 500px; */
     border-radius: 15px;
     padding: 25px;
     display: flex;
     flex-direction: column;
+    margin-top: 10%;
     gap: 10px;
 }
 
@@ -29,9 +30,10 @@ button {
 
 /* styling for the screen part of calculator */
 .display-container {
-    background-color: darkcyan;
+    background-color: aliceblue;
     border-radius: 6px;
     word-wrap: break-word;
+    padding: 10px;
 }
 
 .display-container > div {
@@ -44,13 +46,13 @@ button {
 .input-history {
     font-size: 20px;
     /* height: 32px; */
-    background-color: red;
+    background-color: aliceblue;
 }
 
 .input-display {
     /* height: 64px; */
     font-size: 32px;
-    background-color: aqua;
+    background-color: aliceblue;
 }
 
 /* styling for clear, delete buttons */
@@ -100,7 +102,6 @@ button {
 .keypad-container button {
     font-size: 32px;
     border-radius: 6px;
-    /* margin: 5px; */
     padding-top: 20px;
     padding-bottom: 20px;
 }

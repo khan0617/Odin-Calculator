@@ -21,14 +21,18 @@ function multiply(x, y){
 
 function divide(x, y){
     if(y == 0){
+        alert("Cannot Divide by Zero!");
         return "Divide by Zero!";
     }
-    return Number(x) / Number(y);
+    else{
+        return Number(x) / Number(y);
+    }
 }
 
 // called whenever a keypad button has been clicked on (not for click or delete).
-function updateDisplay(button){
-    let value = button.textContent;
+function updateDisplay(button, keyboardPress = undefined){
+    let value = keyboardPress ? keyboardPress : button.textContent;
+    let displayDiv = document.querySelector('.input-display');
 
     // see if the user clicked +, -, *, ÷, or =
     if(operators.includes(value)){
@@ -42,8 +46,11 @@ function updateDisplay(button){
         displayStr = value;
         switchDisplay = false;
     }
-    else{
+    else if(value == '.' && !displayDiv.textContent.includes('.')){
         displayStr += value;
+    }
+    else if(value != '.'){
+        displayStr += value;  
     }
 
     document.querySelector('.input-display').innerHTML = displayStr;
@@ -56,15 +63,20 @@ function updateDisplay(button){
 function clickedOperator(op){
     let displayDiv = document.querySelector('.input-display');
     let historyDiv = document.querySelector('.input-history');
-    if(op == '=' && opCount == 1){
-            historyStr += displayDiv.textContent + ' =';
-            displayStr = operate(prevOperator, operands[0], displayDiv.textContent);
-            operands[0] = Number(displayStr);
-            opCount = 0;
-            prevOperator = '=';
-            needToSwitchHistory = true;
+    if(op == '=' && opCount == 1 && prevOperator != '='){
+            let result = operate(prevOperator, operands[0], displayDiv.textContent);
+            let divByZero = result == "Divide by Zero!"
+            if(!divByZero){ // make sure it's not divide by zero
+                displayStr = result;
+                historyStr += displayDiv.textContent + ' =';
+                operands[0] = Number(displayStr);
+                opCount = 0;
+                prevOperator = '=';
+                needToSwitchHistory = true;
+            }
+
     }
-    else{ // clicked on +, -, /, *
+    else if(op != '='){ // clicked on +, -, /, *
         if(opCount == 0 && displayDiv.innerHTML != '&nbsp;'){
             opCount += 1;
             operands[0] = displayDiv.textContent;
@@ -156,6 +168,54 @@ function operate(operator, x, y){
     return result;
 }
 
+// allow keyboard input for the calculator
+// only care about 0-9. -, +, /, x, =
+document.addEventListener('keydown', (e) => {
+    let keyPressed = '';
+    if(e.shiftKey){
+        if(e.code == "Equal"){
+            keyPressed = '+';
+        }
+        else if(e.code == 'Digit8'){
+            keyPressed = "*";
+        }
+    }
+
+    else if(e.code.toLowerCase().includes("digit")){
+            keyPressed = e.code.replace("Digit", "");
+    }
+
+    else if(e.code.toLowerCase() == 'period'){
+        keyPressed = '.';
+    }
+    else if(e.code.toLowerCase() == 'minus'){
+        keyPressed = '-';
+    }
+    else if(e.code.toLowerCase() == 'slash'){
+        keyPressed = '÷';
+    }
+    else if(e.code.toLowerCase() == 'keyx'){
+        keyPressed = '*';
+    }
+    else if(e.code.toLowerCase() == 'equal'){
+        keyPressed = '=';
+    }
+    else if(e.code.toLowerCase() == 'enter'){
+        keyPressed = '=';
+    }
+    else if(e.code.toLowerCase() == 'backspace'){
+        deleteKey();
+    }
+    else if(e.code.toLowerCase() == 'delete'){
+        clearKey();
+    }
+
+    if(keyPressed != ''){
+        console.log("Pressed key: " + keyPressed);
+        updateDisplay(undefined, keyPressed);
+    }
+    
+});
 
 // DEBUGGING: testing the operator function
 // console.log(`5+10: ${operate('+', 5, 10)}`); 
